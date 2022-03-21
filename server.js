@@ -177,7 +177,7 @@ addDepartment = () => {
                      VALUES (?)`;
         connection.query(sql, answer.addDept, (err, result) => {
             if (err) throw err;
-            console.log('Added ' + answer.addDept = " to departments!");
+            console.log('Added ' + answer.addDept + " to departments!");
 
             showDepartments();
         });
