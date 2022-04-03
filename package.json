@@ -2,10 +2,10 @@
   "name": "employeetracker",
   "version": "1.0.0",
   "description": "This project consisted of building a command-line application to manage a compay's employee database using Node.js, Inquirer, and MySQL.",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "node server.js",
+    "start": "node index.js",
     "seed": "node db/seeds.sql"
   },
   "repository": {

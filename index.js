@@ -1,10 +1,10 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const inquirer = require('inquirer');
 require('console.table');
 
 var connection = mysql.createConnection({
     host: 'localhost',
-    port: 3301,
+    port: 3306,
     user: 'root',
     password: 'root',
     database: 'company_db'
@@ -59,7 +59,7 @@ function viewEmployee() {
     console.log('Viewing employees\n');
 
 var query =
-    `SELECT e.id, e.first_name, e.last_name, r.title, d.name, r.salary, e.manager_id AS manager
+    `SELECT e.id, e.first_name, e.last_name, r.title, d.dept_name, r.salary, e.manager_id AS manager
     FROM employee e
     JOIN role r
         ON e.role_id = r.id
@@ -95,10 +95,12 @@ connection.query(query, function (err, res) {
 
     console.table(res);
     console.log('Role to Insert!');
+
+    promptInsert(insertRoleChoices);
 });
 }
 
-function promptInsert(promptInsertEmployee) {
+function promptInsert(insertRoleChoices) {
     inquirer
     .prompt([
         {
@@ -168,7 +170,7 @@ function promptDelete(deleteArrayChoices) {
     inquirer
     .prompt([
         {
-            name: 'employeeId',
+            name: 'id',
             type: 'list',
             message: 'Which employee do you want to remove?',
             choices: deleteArrayChoices
@@ -177,7 +179,7 @@ function promptDelete(deleteArrayChoices) {
     .then(function (answer) {
         // after prompting, insert a new item into the db with that info
         connection.query(
-            `DELETE FROM employee WHERE id = ?`, { employeeId: answer.employeeId }, function (err, res) {
+            `DELETE FROM employee WHERE id = ?`, { id: answer.id }, function (err, res) {
                 if (err) throw err;
 
                 console.table(res);
@@ -190,8 +192,8 @@ function promptDelete(deleteArrayChoices) {
 
 //================UPDATE
 
-function updateEmployeeRole() {
-    console.log('Updating a role');
+function updateEmployeeRole(roleChoices) {
+    console.log('Updating an Employee');
 
     var query =
     `SELECT r.id, r.title, r.salary
@@ -209,20 +211,16 @@ function updateEmployeeRole() {
         console.table(res);
         console.log('Array to Update!\n');
 
-        updateEmployeeRole(roleChoices);
+        updateEmployee(roleChoices);
     });
 }
 
-function updateEmployee() {
+function updateEmployee(roleChoices) {
     console.log('Updating an employee!');
 
     var query =
-    `SELECT e.id, e.first_name, e.last_name, r.title, d.name, r.salary, e.manager_id AS manager
-    FROM employee e
-    JOIN role r
-        ON e.role_id = r.id
-    JOIN department d
-    ON d.id = r.department_id`
+    `SELECT e.id, e.first_name, e.last_name
+    FROM employee e`
 
     connection.query(query, function (err, res) {
         if (err) throw err;
@@ -231,15 +229,15 @@ function updateEmployee() {
             name: `${first_name} ${last_name}`,
             value: id
         }));
-
-        console.table(res);
+        console.log(employeeChoices);
+        console.log(res);
         console.log('Array to Update 2!\n');
 
-        updateEmployeeRole(employeeChoices);
+        updateEmployeeInfo(roleChoices, employeeChoices);
     });
 }
 
-function updateEmployeeRole(roleChoices, employeeChoices) {
+function updateEmployeeInfo(roleChoices, employeeChoices) {
     inquirer
     .prompt([
         {
@@ -257,9 +255,9 @@ function updateEmployeeRole(roleChoices, employeeChoices) {
     ])
     .then(function (answer) {
 
-        // when finished prompting, insert a new intem into the database with that info
+        // when finished prompting, insert a new item into the database with that info
         var query = connection.query(
-            `UPDATE employee SET role_id ? WHERE id = ?`, [roleId, employeeId], function (err, res) {
+            `UPDATE employee SET role_id =? WHERE id = ?`, [answer.roleId, answer.employeeId], function (err, res) {
                 if (err) throw err;
 
                 console.table(res);
@@ -269,21 +267,3 @@ function updateEmployeeRole(roleChoices, employeeChoices) {
             });
     });
 }
-
-// const seedItems = require('./item-seeds');
-// const seedUser = require('./user-seeds');
-
-// const sequelize = require('../config/connection');
-
-// const seedAll = async () => {
-//     await sequelize.sync({ force: true });
-//     console.log('\n---- DATABASE SYNCED ----\n');
-//     await seedUser();
-//     console.log('\n---- USERS SEEDED ----\n');
-//     await seedItems();
-//     console.log('\n---- ITEMS SEEDED ----\n');
-
-//     process.exit(0);
-// };
-
-// seedAll();
