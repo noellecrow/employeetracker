@@ -9,6 +9,8 @@ The user will be able to view and manage the departments, roles, and employees o
 - Node.js
 - Inquirer
 - MySQL
+- -console.table
+- Jest
 
 
 
