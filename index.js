@@ -170,7 +170,7 @@ function promptDelete(deleteArrayChoices) {
     inquirer
     .prompt([
         {
-            name: 'id',
+            name: 'employeeDd',
             type: 'list',
             message: 'Which employee do you want to remove?',
             choices: deleteArrayChoices
