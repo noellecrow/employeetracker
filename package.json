@@ -1,5 +1,29 @@
 {
+  "name": "employeetracker",
+  "version": "1.0.0",
+  "description": "This project consisted of building a command-line application to manage a compay's employee database using Node.js, Inquirer, and MySQL.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noellecrow/employeetracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/noellecrow/employeetracker/issues"
+  },
+  "homepage": "https://github.com/noellecrow/employeetracker#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mysql2": "^2.3.3"
+  },
   "devDependencies": {
-    "jest": "^27.5.1"
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.15"
   }
 }
