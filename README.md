@@ -17,7 +17,7 @@ The user will be able to view the departments, roles, and employees of their com
 
 
 ## Link to repository:
- https://github.com/noellecrow/employeetracker
+ https://github.com/noellecrow/tracktrackemployees
 
 ## Walkthrough video:
 
